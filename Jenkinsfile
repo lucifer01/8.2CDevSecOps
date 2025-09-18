@@ -1,6 +1,14 @@
 pipeline {
     agent any
+    tools {
+        nodejs '20.9.0'
+    }
     stages {
+        stage('Version Check') {
+            steps {
+                sh 'npm version'
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/lucifer01/8.2CDevSecOps.git'
@@ -18,8 +26,7 @@ pipeline {
         }
         stage('Generate Coverage Report') {
             steps {
-                // Ensure coverage report exists
-                sh 'npm run coverage || true'
+                sh 'npm run coverage || true' // Ensure coverage report exists
             }
         }
         stage('NPM Audit (Security Scan)') {
